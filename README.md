@@ -161,40 +161,58 @@ mkdir backend && cd backend
 # package.json erstellen
 bun init -y
 
-# Dependencies installieren
-bun add express cors dotenv
+# Core Dependencies
+bun add express cors dotenv helmet compression
 bun add mongoose jsonwebtoken bcrypt
-bun add -d @types/express @types/cors @types/jsonwebtoken @types/bcrypt typescript tsx
+bun add express-rate-limit express-validator
+bun add morgan cookie-parser
 
-# TypeScript Config erstellen
-bunx tsc --init
+# Dev Dependencies
+bun add -d @types/express @types/cors @types/jsonwebtoken 
+bun add -d @types/bcrypt @types/morgan @types/cookie-parser
+bun add -d typescript tsx nodemon @types/compression
 ```
 
-#### 📋 Backend package.json:
+#### 📋 Backend package.json (Updated):
 ```json
 {
-  "name": "todo-backend",
+  "name": "fullstack-todo-backend",
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
     "dev": "tsx --watch src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "start:prod": "NODE_ENV=production node dist/index.js",
+    "test": "bun test",
+    "lint": "eslint src --ext .ts",
+    "format": "prettier --write src"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "mongoose": "^8.0.0",
+    "express": "^4.19.2",
+    "mongoose": "^8.5.0",
     "jsonwebtoken": "^9.0.2",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.4.5",
+    "helmet": "^7.1.0",
+    "compression": "^1.7.4",
+    "express-rate-limit": "^7.3.1",
+    "express-validator": "^7.1.0",
+    "morgan": "^1.10.0",
+    "cookie-parser": "^1.4.6"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
-    "@types/jsonwebtoken": "^9.0.5",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
-    "typescript": "^5.2.2",
-    "tsx": "^4.6.0"
+    "@types/morgan": "^1.9.9",
+    "@types/cookie-parser": "^1.4.7",
+    "@types/compression": "^1.7.5",
+    "typescript": "^5.5.0",
+    "tsx": "^4.16.0",
+    "nodemon": "^3.1.4"
   }
 }
 ```
@@ -212,37 +230,70 @@ cd ..
 bun create expo frontend --template tabs@latest
 cd frontend
 
-# Zusätzliche Dependencies
-bun add @react-navigation/native @react-navigation/native-stack
-bun add react-native-screens react-native-safe-area-context
-bun add axios react-hook-form
-bun add @expo/vector-icons
+# Zusätzliche Dependencies für Todo App
+bun add @react-native-async-storage/async-storage
+bun add @hookform/resolvers axios
+bun add expo-router expo-secure-store
+bun add expo-status-bar expo-splash-screen
+bun add nativewind react-hook-form zod
+bun add react-native-gesture-handler react-native-reanimated
+bun add react-native-safe-area-context react-native-screens
+
+# Dev Dependencies
+bun add -d @expo/cli tailwindcss
 ```
 
-#### 📋 Frontend package.json:
+#### 📋 Frontend package.json (Todo App):
 ```json
 {
-  "name": "todo-frontend",
+  "name": "fullstack-todo-mobile",
+  "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web"
+    "start": "bun exec expo start",
+    "android": "bun exec expo start --android",
+    "ios": "bun exec expo start --ios",
+    "web": "bun exec expo start --web",
+    "lint": "bun exec expo lint",
+    "test": "bun test",
+    "build:android": "bun exec expo build:android",
+    "build:ios": "bun exec expo build:ios"
   },
   "dependencies": {
-    "expo": "~50.0.0",
-    "react": "18.2.0",
-    "react-native": "0.73.0",
-    "@react-navigation/native": "^6.1.9",
-    "@react-navigation/native-stack": "^6.9.17",
-    "axios": "^1.6.0",
-    "react-hook-form": "^7.48.0"
+    "@hookform/resolvers": "^5.0.1",
+    "@react-native-async-storage/async-storage": "2.1.2",
+    "axios": "^1.7.0",
+    "expo": "~53.0.0",
+    "expo-auth-session": "~6.2.0",
+    "expo-constants": "^17.1.7",
+    "expo-router": "^5.0.0",
+    "expo-secure-store": "^14.0.0",
+    "expo-splash-screen": "^0.30.0",
+    "expo-status-bar": "^2.2.0",
+    "nativewind": "^4.1.23",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-hook-form": "^7.56.4",
+    "react-native": "0.79.5",
+    "react-native-gesture-handler": "~2.24.0",
+    "react-native-reanimated": "~3.17.4",
+    "react-native-safe-area-context": "5.4.0",
+    "react-native-screens": "~4.11.1",
+    "react-native-web": "^0.20.0",
+    "zod": "^3.25.28"
   },
   "devDependencies": {
-    "@types/react": "~18.2.45",
-    "typescript": "^5.1.3"
-  }
+    "@babel/core": "^7.25.2",
+    "@expo/cli": "^0.24.17",
+    "@expo/config-plugins": "^10.1.1",
+    "@testing-library/react-native": "^12.4.0",
+    "@types/react": "~19.0.10",
+    "jest": "^29.7.0",
+    "react-test-renderer": "18.3.1",
+    "tailwindcss": "^3.4.0",
+    "typescript": "~5.8.3"
+  },
+  "private": true
 }
 ```
 
@@ -282,47 +333,193 @@ expo start                    # QR Code für Expo Go
 expo start --web             # Im Browser öffnen
 expo start --android         # Android Emulator
 expo start --ios             # iOS Simulator (nur Mac)
+expo start --clear-cache     # Cache leeren
 
-# Build Commands
-expo build:android           # Android APK
-expo build:ios              # iOS IPA (nur Mac)
-expo publish                # App zu Expo veröffentlichen
+# Build Commands (EAS Build)
+eas build --platform android # Android APK/AAB
+eas build --platform ios     # iOS IPA (nur Mac)
+eas build --platform all     # Beide Plattformen
+
+# Development Build
+eas build --profile development --platform android
+expo install --fix           # Kompatible Packages installieren
 
 # Projekt Management
-expo install                 # Kompatible Packages installieren
-expo doctor                  # Projekt auf Probleme prüfen
-expo logout / expo login     # Account Management
+expo doctor                   # Projekt auf Probleme prüfen
+expo logout / expo login      # Account Management
+npx create-expo-app --template # Template Liste anzeigen
+
+# Testing & Debugging
+expo start --dev-client      # Mit Development Build
+expo start --tunnel          # Über Internet teilen
 ```
 
 ---
 
-## 9️⃣ Beispiel Code-Struktur
+## 9️⃣ Moderne Konfigurationsdateien
 
-### 🔹 Backend Models (Mongoose):
+### 🔹 app.json/app.config.js (Expo Config):
+```json
+{
+  "expo": {
+    "name": "Todo App",
+    "slug": "fullstack-todo-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.yourname.todoapp"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.yourname.todoapp"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#ffffff",
+          "image": "./assets/splash.png",
+          "dark": {
+            "image": "./assets/splash-dark.png",
+            "backgroundColor": "#000000"
+          }
+        }
+      ]
+    ],
+    "scheme": "todoapp",
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "your-project-id"
+      }
+    }
+  }
+}
+```
+
+### 🔹 tailwind.config.js (NativeWind):
+```javascript
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./App.{js,jsx,ts,tsx}",
+    "./app/**/*.{js,jsx,ts,tsx}",
+    "./components/**/*.{js,jsx,ts,tsx}"
+  ],
+  presets: [require("nativewind/preset")],
+  theme: {
+    extend: {
+      colors: {
+        primary: "#3B82F6",
+        secondary: "#64748B",
+        success: "#10B981",
+        warning: "#F59E0B",
+        danger: "#EF4444"
+      }
+    }
+  },
+  plugins: []
+};
+```
+
+### 🔹 .env Beispiel (Backend):
+```env
+# Database
+MONGODB_URI=mongodb://localhost:27017/todoapp
+MONGODB_URI_PROD=mongodb+srv://user:pass@cluster.mongodb.net/todoapp
+
+# JWT
+JWT_SECRET=your-super-secret-jwt-key-here
+JWT_EXPIRES_IN=7d
+
+# Server
+PORT=3000
+NODE_ENV=development
+
+# CORS
+FRONTEND_URL=http://localhost:8081
+ALLOWED_ORIGINS=http://localhost:8081,exp://192.168.1.100:8081
+
+# Rate Limiting
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX_REQUESTS=100
+```
+
+---
+
+## 🔟 Beispiel Code-Struktur
+
+### 🔹 Backend Models (Mongoose mit TypeScript):
 ```typescript
 // backend/src/models/User.ts
-import mongoose from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 import bcrypt from 'bcrypt';
 
-interface IUser {
+export interface IUser extends Document {
+  _id: string;
   email: string;
   password: string;
   name: string;
+  avatar?: string;
+  createdAt: Date;
+  updatedAt: Date;
   comparePassword(password: string): Promise<boolean>;
 }
 
-const userSchema = new mongoose.Schema<IUser>({
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  name: { type: String, required: true }
+const userSchema = new Schema<IUser>({
+  email: { 
+    type: String, 
+    required: true, 
+    unique: true,
+    lowercase: true,
+    trim: true
+  },
+  password: { 
+    type: String, 
+    required: true,
+    minlength: 6
+  },
+  name: { 
+    type: String, 
+    required: true,
+    trim: true
+  },
+  avatar: {
+    type: String,
+    default: null
+  }
+}, {
+  timestamps: true
 });
 
+// Hash password before saving
 userSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next();
-  this.password = await bcrypt.hash(this.password, 10);
+  this.password = await bcrypt.hash(this.password, 12);
   next();
 });
 
+// Compare password method
 userSchema.methods.comparePassword = async function(password: string) {
   return bcrypt.compare(password, this.password);
 };
@@ -330,28 +527,172 @@ userSchema.methods.comparePassword = async function(password: string) {
 export default mongoose.model<IUser>('User', userSchema);
 ```
 
-### 🔹 Frontend Auth Service:
+### 🔹 Todo Model:
+```typescript
+// backend/src/models/Todo.ts
+import mongoose, { Document, Schema } from 'mongoose';
+
+export interface ITodo extends Document {
+  title: string;
+  description?: string;
+  completed: boolean;
+  priority: 'low' | 'medium' | 'high';
+  dueDate?: Date;
+  user: mongoose.Types.ObjectId;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const todoSchema = new Schema<ITodo>({
+  title: {
+    type: String,
+    required: true,
+    trim: true,
+    maxlength: 100
+  },
+  description: {
+    type: String,
+    trim: true,
+    maxlength: 500
+  },
+  completed: {
+    type: Boolean,
+    default: false
+  },
+  priority: {
+    type: String,
+    enum: ['low', 'medium', 'high'],
+    default: 'medium'
+  },
+  dueDate: {
+    type: Date,
+    default: null
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  }
+}, {
+  timestamps: true
+});
+
+export default mongoose.model<ITodo>('Todo', todoSchema);
+```
+
+### 🔹 Frontend Auth Service (mit Expo Secure Store):
 ```typescript
 // frontend/src/services/auth.ts
 import axios from 'axios';
+import * as SecureStore from 'expo-secure-store';
+import { API_URL } from '../config';
 
-const API_URL = 'http://localhost:3000/api';
+interface LoginResponse {
+  token: string;
+  user: {
+    id: string;
+    email: string;
+    name: string;
+  };
+}
 
 export const authService = {
-  login: async (email: string, password: string) => {
+  // Login
+  login: async (email: string, password: string): Promise<LoginResponse> => {
     const response = await axios.post(`${API_URL}/auth/login`, {
       email,
       password
     });
+    
+    // Token sicher speichern
+    await SecureStore.setItemAsync('token', response.data.token);
     return response.data;
   },
 
-  register: async (name: string, email: string, password: string) => {
+  // Register
+  register: async (name: string, email: string, password: string): Promise<LoginResponse> => {
     const response = await axios.post(`${API_URL}/auth/register`, {
       name,
       email,
       password
     });
+    
+    await SecureStore.setItemAsync('token', response.data.token);
+    return response.data;
+  },
+
+  // Logout
+  logout: async (): Promise<void> => {
+    await SecureStore.deleteItemAsync('token');
+  },
+
+  // Get stored token
+  getToken: async (): Promise<string | null> => {
+    return await SecureStore.getItemAsync('token');
+  },
+
+  // Check if user is authenticated
+  isAuthenticated: async (): Promise<boolean> => {
+    const token = await SecureStore.getItemAsync('token');
+    return !!token;
+  }
+};
+```
+
+### 🔹 Frontend Todo Service:
+```typescript
+// frontend/src/services/todoService.ts
+import axios from 'axios';
+import * as SecureStore from 'expo-secure-store';
+import { API_URL } from '../config';
+
+export interface Todo {
+  _id: string;
+  title: string;
+  description?: string;
+  completed: boolean;
+  priority: 'low' | 'medium' | 'high';
+  dueDate?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Axios Interceptor für Authorization Header
+axios.interceptors.request.use(async (config) => {
+  const token = await SecureStore.getItemAsync('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+export const todoService = {
+  // Get all todos
+  getTodos: async (): Promise<Todo[]> => {
+    const response = await axios.get(`${API_URL}/todos`);
+    return response.data;
+  },
+
+  // Create todo
+  createTodo: async (todo: Partial<Todo>): Promise<Todo> => {
+    const response = await axios.post(`${API_URL}/todos`, todo);
+    return response.data;
+  },
+
+  // Update todo
+  updateTodo: async (id: string, updates: Partial<Todo>): Promise<Todo> => {
+    const response = await axios.put(`${API_URL}/todos/${id}`, updates);
+    return response.data;
+  },
+
+  // Delete todo
+  deleteTodo: async (id: string): Promise<void> => {
+    await axios.delete(`${API_URL}/todos/${id}`);
+  },
+
+  // Toggle completion
+  toggleComplete: async (id: string): Promise<Todo> => {
+    const response = await axios.patch(`${API_URL}/todos/${id}/toggle`);
     return response.data;
   }
 };

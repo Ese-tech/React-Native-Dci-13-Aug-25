@@ -307,6 +307,81 @@ bun add react-native-safe-area-context react-native-screens
 bun add -d @expo/cli tailwindcss
 ```
 
+#### 🎨 NativeWind Setup (Tailwind CSS für React Native):
+```bash
+# NativeWind installieren
+bun add nativewind
+bun add -d tailwindcss
+
+# Tailwind CSS Konfiguration erstellen
+bunx tailwindcss init
+
+# Babel Plugin hinzufügen
+bun add -d @expo/metro-config
+```
+
+#### ⚙️ NativeWind Konfiguration:
+
+##### 1. `tailwind.config.js` erstellen:
+```javascript
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./App.{js,jsx,ts,tsx}",
+    "./app/**/*.{js,jsx,ts,tsx}",
+    "./components/**/*.{js,jsx,ts,tsx}",
+    "./screens/**/*.{js,jsx,ts,tsx}"
+  ],
+  presets: [require("nativewind/preset")],
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          50: '#eff6ff',
+          500: '#3b82f6',
+          600: '#2563eb',
+          700: '#1d4ed8',
+        },
+        gray: {
+          50: '#f9fafb',
+          100: '#f3f4f6',
+          900: '#111827',
+        }
+      }
+    }
+  },
+  plugins: []
+};
+```
+
+##### 2. `metro.config.js` anpassen:
+```javascript
+const { getDefaultConfig } = require('expo/metro-config');
+const { withNativeWind } = require('nativewind/metro');
+
+const config = getDefaultConfig(__dirname);
+
+module.exports = withNativeWind(config, { input: './global.css' });
+```
+
+##### 3. `global.css` erstellen:
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+##### 4. `app/_layout.tsx` oder `App.tsx` anpassen:
+```tsx
+import '../global.css';
+// ... rest of your app
+```
+
+##### 5. TypeScript Support (`nativewind-env.d.ts`):
+```typescript
+/// <reference types="nativewind/types" />
+```
+
 #### 📋 Frontend package.json (Todo App):
 ```json
 {
@@ -380,9 +455,17 @@ bun add -d typescript @types/express @types/mongoose tsx
 cd ..
 bun create expo frontend --template tabs@latest
 cd frontend
-bun add @react-navigation/native axios
 
-# 4. Development starten
+# 4. NativeWind Setup
+bun add nativewind
+bun add -d tailwindcss @expo/metro-config
+bunx tailwindcss init
+
+# 5. Weitere Dependencies
+bun add @react-navigation/native axios @hookform/resolvers
+bun add expo-router expo-secure-store react-hook-form zod
+
+# 6. Development starten
 # Terminal 1 (Backend):
 cd backend && bun dev
 
@@ -766,18 +849,69 @@ export const todoService = {
 
 ## 1️⃣2️⃣ Ein kleines Beispiel – Counter App
 
+### 🎨 **Mit NativeWind (Tailwind CSS):**
 ```tsx
-// App.tsx
+// App.tsx - Mit NativeWind Styling
 import React, { useState } from "react";
-import { Text, View, Button, StyleSheet } from "react-native";
+import { Text, View, Pressable } from "react-native";
+import "../global.css"; // NativeWind CSS importieren
+
+export default function App() {
+  const [count, setCount] = useState<number>(0);
+
+  return (
+    <View className="flex-1 justify-center items-center bg-gray-50">
+      <Text className="text-3xl font-bold text-gray-900 mb-8">
+        Zähler: {count}
+      </Text>
+      <Pressable 
+        className="bg-blue-500 px-6 py-3 rounded-lg active:bg-blue-600"
+        onPress={() => setCount(count + 1)}
+      >
+        <Text className="text-white font-semibold text-lg">
+          Hochzählen
+        </Text>
+      </Pressable>
+      
+      {/* Reset Button */}
+      <Pressable 
+        className="mt-4 bg-gray-200 px-6 py-2 rounded-lg active:bg-gray-300"
+        onPress={() => setCount(0)}
+      >
+        <Text className="text-gray-700 font-medium">
+          Zurücksetzen
+        </Text>
+      </Pressable>
+    </View>
+  );
+}
+```
+
+### 📱 **Traditionelles StyleSheet (Vergleich):**
+```tsx
+// App.tsx - Mit traditionellem StyleSheet
+import React, { useState } from "react";
+import { Text, View, Pressable, StyleSheet } from "react-native";
 
 export default function App() {
   const [count, setCount] = useState<number>(0);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Zähler: {count}</Text>
-      <Button title="Hochzählen" onPress={() => setCount(count + 1)} />
+      <Text style={styles.title}>Zähler: {count}</Text>
+      <Pressable 
+        style={styles.button}
+        onPress={() => setCount(count + 1)}
+      >
+        <Text style={styles.buttonText}>Hochzählen</Text>
+      </Pressable>
+      
+      <Pressable 
+        style={styles.resetButton}
+        onPress={() => setCount(0)}
+      >
+        <Text style={styles.resetButtonText}>Zurücksetzen</Text>
+      </Pressable>
     </View>
   );
 }
@@ -787,13 +921,45 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#f9fafb"
   },
-  text: {
+  title: {
     fontSize: 24,
-    marginBottom: 20,
+    fontWeight: "bold",
+    color: "#111827",
+    marginBottom: 32
   },
+  button: {
+    backgroundColor: "#3b82f6",
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 8
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "600",
+    fontSize: 18
+  },
+  resetButton: {
+    backgroundColor: "#e5e7eb",
+    paddingHorizontal: 24,
+    paddingVertical: 8,
+    borderRadius: 8,
+    marginTop: 16
+  },
+  resetButtonText: {
+    color: "#374151",
+    fontWeight: "500"
+  }
 });
 ```
+
+### 🎯 **NativeWind Vorteile:**
+- 🚀 **Schneller** → Keine StyleSheet Objekte nötig
+- 🎨 **Konsistent** → Gleiche Klassen wie im Web
+- 📱 **Responsive** → Responsive Design möglich
+- 🔄 **Wiederverwendbar** → Utility Classes
+- 💡 **IntelliSense** → Auto-Completion in VS Code
 
 ---
 

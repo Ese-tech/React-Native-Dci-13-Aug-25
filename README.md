@@ -1,6 +1,6 @@
 # 📱 React Native mit TypeScript & Bun – Einführung für Anfänger
 
-Willkommen! Heute lernst du, was **React Native** ist, warum wir es brauchen, und wie man es mit **TypeScript** & **Bun** installiert. Außerdem gibt es ein paar kleine Codebeispiele.
+Willkommen! Heute lernen wir, was **React Native** ist, warum wir es brauchen, und wie man es mit **TypeScript** & **Bun** installiert. Außerdem gibt es ein paar kleine Codebeispiele.
 
 ---
 
@@ -344,30 +344,17 @@ bun add -d tailwindcss
 # NativeWind v4 funktioniert out-of-the-box
 ```
 
-#### ⚙️ NativeWind Konfiguration (Minimal Setup):
+#### ⚙️ NativeWind v4 Setup (Ultra-Minimal):
 
-##### 1. TypeScript Support (`nativewind.d.ts`):
-```typescript
-// nativewind.d.ts
-import "nativewind/types";
-```
-
-##### 2. `app/_layout.tsx` oder `App.tsx` anpassen:
+##### 1. `app/_layout.tsx` oder `App.tsx` anpassen:
 ```tsx
 import 'nativewind'; // NativeWind aktivieren
 // ... rest of your app
 ```
 
-##### 3. `metro.config.js` (optional, für erweiterte Features):
-```javascript
-const { getDefaultConfig } = require('expo/metro-config');
+> ✅ **Das war's!** NativeWind v4 funktioniert out-of-the-box ohne weitere Konfiguration!
 
-const config = getDefaultConfig(__dirname);
-
-module.exports = config;
-```
-
-> ℹ️ **Info:** NativeWind v4 benötigt keine `tailwind.config.js` oder `global.css` mehr! Es funktioniert automatisch mit den Standard Tailwind-Klassen.
+> ℹ️ **Info:** NativeWind v4 benötigt keine `tailwind.config.js`, `global.css` oder `nativewind.d.ts` mehr! TypeScript-Support ist automatisch verfügbar.
 
 #### 📋 Frontend package.json (Todo App):
 ```json
@@ -449,14 +436,7 @@ cd frontend
 bun add nativewind
 bun add -d tailwindcss
 
-# 5. TypeScript Definitionen erstellen
-echo 'import "nativewind/types";' > nativewind.d.ts
-
-# 5. Weitere Dependencies
-bun add @react-navigation/native axios @hookform/resolvers
-bun add expo-router expo-secure-store react-hook-form zod
-
-# 6. Development starten
+# 5. Development starten
 # Terminal 1 (Backend):
 cd backend && bun dev
 
@@ -555,31 +535,6 @@ expo start --tunnel          # Über Internet teilen
     }
   }
 }
-```
-
-### 🔹 tailwind.config.js (NativeWind):
-```javascript
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: [
-    "./App.{js,jsx,ts,tsx}",
-    "./app/**/*.{js,jsx,ts,tsx}",
-    "./components/**/*.{js,jsx,ts,tsx}"
-  ],
-  presets: [require("nativewind/preset")],
-  theme: {
-    extend: {
-      colors: {
-        primary: "#3B82F6",
-        secondary: "#64748B",
-        success: "#10B981",
-        warning: "#F59E0B",
-        danger: "#EF4444"
-      }
-    }
-  },
-  plugins: []
-};
 ```
 
 ### 🔹 .env Beispiel (Backend):

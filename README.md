@@ -26,7 +26,71 @@ Das Coole: Wir schreiben nur **einen Code**, und React Native übersetzt ihn so,
 
 ---
 
-## 3️⃣ Was ist TypeScript in React Native?
+## 3️⃣ React vs. React Native – Was ist der Unterschied?
+
+**React** und **React Native** sind verwandt, aber für verschiedene Plattformen gedacht:
+
+| 🔍 **Aspekt** | 🌐 **React** | 📱 **React Native** |
+|---------------|--------------|---------------------|
+| **Zielplattform** | Web Browser | Mobile Apps (iOS/Android) |
+| **Rendering** | DOM (HTML Elements) | Native Mobile Components |
+| **Sprache** | JavaScript/TypeScript + HTML/CSS | JavaScript/TypeScript |
+| **Styling** | CSS, Styled Components | StyleSheet API, NativeWind |
+| **Navigation** | React Router | React Navigation, Expo Router |
+| **Deployment** | Web Server | App Stores (iOS/Android) |
+| **Development** | Browser DevTools | Expo Go, Simulators |
+| **Performance** | Browser abhängig | Native Performance |
+| **APIs** | Web APIs (fetch, localStorage) | Native APIs (Kamera, GPS, etc.) |
+| **Komponenten** | `<div>`, `<span>`, `<button>` | `<View>`, `<Text>`, `<Pressable>` |
+
+### 📝 **Code-Beispiel Vergleich:**
+
+#### 🌐 React (Web):
+```jsx
+import React from 'react';
+import './App.css';
+
+function App() {
+  return (
+    <div className="container">
+      <h1>Hallo Web!</h1>
+      <button onClick={() => alert('Clicked!')}>
+        Klick mich
+      </button>
+    </div>
+  );
+}
+```
+
+#### 📱 React Native (Mobile):
+```tsx
+import React from 'react';
+import { View, Text, Pressable, Alert, StyleSheet } from 'react-native';
+
+function App() {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Hallo Mobile!</Text>
+      <Pressable 
+        style={styles.button}
+        onPress={() => Alert.alert('Clicked!')}
+      >
+        <Text>Klick mich</Text>
+      </Pressable>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  title: { fontSize: 24, marginBottom: 20 },
+  button: { padding: 10, backgroundColor: '#007AFF' }
+});
+```
+
+---
+
+## 4️⃣ Was ist TypeScript in React Native?
 
 **TypeScript** ist wie JavaScript, aber mit **Typen**.  
 Das hilft dir, Fehler schon beim Programmieren zu finden.
@@ -46,13 +110,13 @@ function greet(name: string): string {
 ---
 
 
-## 4️⃣ Was ist Bun und warum hier?
+## 5️⃣ Was ist Bun und warum hier?
 **Bun** ist ein superschneller JavaScript- & TypeScript-Runner (wie Node.js, aber schneller).
 Wir können damit schnell Pakete installieren und Skripte ausführen.
 
 ---
 
-## 5️⃣ Was ist Expo?
+## 6️⃣ Was ist Expo?
 
 **Expo** ist ein Framework und eine Plattform für React Native, die die Entwicklung erheblich vereinfacht.
 
@@ -69,7 +133,7 @@ Wir können damit schnell Pakete installieren und Skripte ausführen.
 
 ---
 
-## 6️⃣ Installation/Initialisierung – Schritt für Schritt
+## 7️⃣ Installation/Initialisierung – Schritt für Schritt
 **🔹 Voraussetzungen:**
 - Git installiert
 - Bun installiert (bun.sh)
@@ -78,7 +142,7 @@ Wir können damit schnell Pakete installieren und Skripte ausführen.
 
 ---
 
-### 6.1 Neues Projekt erstellen (mit TypeScript)
+### 7.1 Neues Projekt erstellen (mit TypeScript)
 ```bash
 # Neues React Native Projekt erstellen
 bun create expo my-app --template tabs@latest
@@ -95,7 +159,7 @@ bun add -g @expo/cli
 
 ---
 
-### 6.2 App starten
+### 7.2 App starten
 ```bash
 # App im Entwicklungsmodus starten
 bun dev
@@ -116,7 +180,7 @@ expo start --ios
 
 ---
 
-## 7️⃣ Fullstack Todo App Setup (Login/Register + Todo CRUD)
+## 8️⃣ Fullstack Todo App Setup (Login/Register + Todo CRUD)
 
 ### 🏗️ Projektstruktur:
 ```
@@ -150,7 +214,7 @@ fullstack-todo/
 
 ---
 
-### 7.1 Backend Setup (Bun + Express + MongoDB)
+### 8.1 Backend Setup (Bun + Express + MongoDB)
 
 #### 📦 Backend Dependencies:
 ```bash
@@ -219,7 +283,7 @@ bun add -d typescript tsx nodemon @types/compression
 
 ---
 
-### 7.2 Frontend Setup (React Native + Expo)
+### 8.2 Frontend Setup (React Native + Expo)
 
 #### 📱 Frontend Dependencies:
 ```bash
@@ -299,7 +363,7 @@ bun add -d @expo/cli tailwindcss
 
 ---
 
-## 8️⃣ Terminal Commands Übersicht
+## 9️⃣ Terminal Commands Übersicht
 
 ### 🔹 Projekt initialisieren:
 ```bash
@@ -356,7 +420,7 @@ expo start --tunnel          # Über Internet teilen
 
 ---
 
-## 9️⃣ Moderne Konfigurationsdateien
+## 🔟 Moderne Konfigurationsdateien
 
 ### 🔹 app.json/app.config.js (Expo Config):
 ```json
@@ -467,7 +531,7 @@ RATE_LIMIT_MAX_REQUESTS=100
 
 ---
 
-## 🔟 Beispiel Code-Struktur
+## 1️⃣1️⃣ Beispiel Code-Struktur
 
 ### 🔹 Backend Models (Mongoose mit TypeScript):
 ```typescript
@@ -700,7 +764,7 @@ export const todoService = {
 
 ---
 
-## 🔟 Ein kleines Beispiel – Counter App
+## 1️⃣2️⃣ Ein kleines Beispiel – Counter App
 
 ```tsx
 // App.tsx
@@ -733,7 +797,7 @@ const styles = StyleSheet.create({
 
 ---
 
-## 1️⃣1️⃣ Neue Features in React Native (2025)
+## 1️⃣3️⃣ Neue Features in React Native (2025)
 🚀 **New Architecture** → Bessere Performance
 
 🖼️ **Fabric Renderer** → Schnelleres UI-Rendering
@@ -748,7 +812,7 @@ const styles = StyleSheet.create({
 
 ---
 
-## 1️⃣2️⃣ Nützliche Links & Ressourcen
+## 1️⃣4️⃣ Nützliche Links & Ressourcen
 
 ### 📚 Dokumentation:
 - [React Native Docs](https://reactnative.dev/)

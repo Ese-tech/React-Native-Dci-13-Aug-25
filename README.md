@@ -35,7 +35,7 @@ Das Coole: Wir schreiben nur **einen Code**, und React Native übersetzt ihn so,
 | **Zielplattform** | Web Browser | Mobile Apps (iOS/Android) |
 | **Rendering** | DOM (HTML Elements) | Native Mobile Components |
 | **Sprache** | JavaScript/TypeScript + HTML/CSS | JavaScript/TypeScript |
-| **Styling** | CSS, Styled Components | StyleSheet API, NativeWind |
+| **Styling** | CSS, TailWind-CSS, Styled Components | StyleSheet API, NativeWind |
 | **Navigation** | React Router | React Navigation, Expo Router |
 | **Deployment** | Web Server | App Stores (iOS/Android) |
 | **Development** | Browser DevTools | Expo Go, Simulators |
